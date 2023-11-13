@@ -529,7 +529,5 @@ public class KrazyEight {
        State state = new State();
 
        state.GameLoop(sc);
-
-       sc.close();
-   }
+    }
 }
