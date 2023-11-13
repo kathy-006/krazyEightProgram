@@ -410,7 +410,7 @@ class State {
        System.out.println("Top card of the discard pile:\n" + displayCard(returnTopPlayedCard()));
 
        if (!checkPlayerPlayable()) {
-           System.out.println("You have no valid cards to play. You must draw a card.\n");
+           System.out.println("No valid cards. Draw one card.\n");
            String drawnCard = drawCard();
            player.hand += drawnCard;
            System.out.println("You drew:\n" + displayCard(drawnCard) + "\n");
@@ -422,24 +422,15 @@ class State {
            return;
        }
 
-       System.out.println("Enter a card to play (Enter None to skip):");
+       System.out.println("Enter a card:");
        String card = sc.nextLine() + ",";
-
-       if (card.equals("None")) {
-           System.out.println("You skipped your turn. You must draw a card.\n");
-           String drawnCard = drawCard();
-           player.hand += drawnCard;
-           System.out.println("You drew:\n" + displayCard(drawnCard) + "\n");
-           playerTurn = !playerTurn;
-           return;
-       }
 
        if (card.charAt(0) == '1' && card.charAt(1) == '0') {
            card = "T" + card.substring(2);
        }
 
        if (!checkPlayerCardValidity(card) && !card.equals("None")) {
-           System.out.println("Invalid card. Please try again.\n");
+           System.out.println("Invalid card. Can't play this card. Enter another card:\n");
            PlayerTurn(sc);
        } else {
 
@@ -464,7 +455,7 @@ class State {
        System.out.println("The computer has " + (computer.hand.length() / 3) + " cards.");
 
        if (card.equals("")) {
-           System.out.println("The computer has no valid cards to play. It must draw a card.\n");
+           System.out.println("The computer has no correct cards to play. It must draw a card.\n");
            String drawnCard = drawCard();
            computer.hand += drawnCard;
            computer.skipCounter++;
