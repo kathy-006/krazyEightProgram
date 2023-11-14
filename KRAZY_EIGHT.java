@@ -64,11 +64,8 @@ class Player {
 class State {
 
    String drawPile;
-   // The discard pile.
    String discardPile;
-   // Turn tracker.
    boolean isPlayerTurn;
-   // The player.
    Player player, computer;
 
    /**
@@ -262,40 +259,26 @@ class State {
     */
 
    public boolean checkPlayerCardValidity(String card) {
-       // First, check if the card is in the proper format.
        if (!isValidCard(card)) {
-           // The card is not in the proper format.
            return false;
        }
 
-       // Next, check if the card is in the player's hand.
        if (!containsString(player.hand, card)) {
-           // The card is not in the player's hand.
            return false;
        }
-       // Next, check if the card can be played according to the rules.
-       // For this, we need the top card of the discard pile.
+       
        String topCard = returnTopPlayedCard();
-       // If the card is of the same number, it can be played and the player's turn continues.
        if (card.charAt(0) == topCard.charAt(0)) {
-           // The card can be played.
            return true;
        }
-       // If the card is of the same family, it can be played and the player's turn ends.
        if (card.charAt(1) == topCard.charAt(1)) {
-           // The card can be played.
-           // The turn flips.
            isPlayerTurn = !isPlayerTurn;
            return true;
        }
-       // If the player enters an 8, it can be played and the player's turn ends.
        if (card.charAt(0) == '8') {
-           // The card can be played.
-           // The turn flips.
            isPlayerTurn = !isPlayerTurn;
            return true;
        }
-       // If none of the above conditions are satisfied, the card cannot be played.
        return false;
    }
 
@@ -308,39 +291,25 @@ class State {
     */
 
    public boolean checkComputerCardValidity(String card) {
-       // First, check if the card is in the proper format.
        if (!isValidCard(card)) {
-           // The card is not in the proper format.
            return false;
        }
-       // Next, check if the card is in the player's hand.
        if (!containsString(computer.hand, card)){
-           // The card is not in the player's hand.
            return false;
        }
-       // Next, check if the card can be played according to the rules.
-       // For this, we need the top card of the discard pile.
+       
        String topCard = returnTopPlayedCard();
-       // If the card is of the same number, it can be played and the player's turn continues.
        if (card.charAt(0) == topCard.charAt(0)) {
-           // The card can be played.
            return true;
        }
-       // If the card is of the same family, it can be played and the player's turn ends.
        if (card.charAt(1) == topCard.charAt(1)) {
-           // The card can be played.
-           // The turn flips.
            isPlayerTurn = !isPlayerTurn;
            return true;
        }
-       // If the player enters an 8, it can be played and the player's turn ends.
        if (card.charAt(0) == '8') {
-           // The card can be played.
-           // The turn flips.
            isPlayerTurn = !isPlayerTurn;
            return true;
        }
-       // If none of the above conditions are satisfied, the card cannot be played.
        return false;
    }
 
@@ -411,8 +380,6 @@ class State {
        }
        return "";
    }
-
-   // Game Loops.
 
    /**
     * This method display's the player's hand, displays the top card of the discard pile, and draws a card for the player
