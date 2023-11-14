@@ -1,15 +1,15 @@
 /**
-* Group Members: 
+* Group Members:
 * - Anya Joshi
 * - Tu-Uyen Nguyen
 * - Esha Shivakumar
 * - Shakthi Sivasankar
 *
 * Period: 4
-* 
+*
 * Game Name: Crazy Eights
 * Program Description: This Java program implements a simplified and text-based version of the crazy-eights game.
-* Game Objective: To be the first player yo empty their hand by strategically playing cards with matching rank or suits.
+* Game Objective: To be the first player to empty their hand by strategically playing cards with matching rank or suits.
 *
 * Rules:
 * - Player matches the suit/rank of a card from their hand with the card on top of the discard pile.
@@ -17,8 +17,26 @@
 * - A card is drawn for the player if there isn't a valid card.
 * - The first player to empty their hand wins.
 *
-* Sample Output: Someone pls add or text me a sample output copied from the console. The eclipse softawre on 
-* my computer keeps crashing.
+* Sample Output: 
+* Top card of the discard pile:
+* 2 of Hearts
+* The computer has 5 cards.
+* The computer has no correct cards to play. It must draw a card.
+*
+* Top card of the discard pile:
+* 2 of Hearts
+* The computer has 6 cards.
+* The computer played:
+* 8 of Spades
+* 
+* Your hand:
+* 2 of Spades, 9 of Spades
+* Top card of the discad pile:
+* 8 of Spades
+* Enter a card:
+* 9S
+* You played:
+* 9 of Spades
 */
 
 import java.util.Scanner;
@@ -44,36 +62,36 @@ class Player {
 * This class represents the state of the game and tracks the game loop.
 */
 class State {
-   
+
    String drawPile;
    // The discard pile.
    String discardPile;
    // Turn tracker.
-   boolean playerTurn;
+   boolean isPlayerTurn;
    // The player.
    Player player, computer;
 
    /**
-    * This is a default constructor that initializes the state variables and the game 
+    * This is a default constructor that initializes the state variables and the game
     * environment.
     */
 
    State() {
        drawPile = "";
        discardPile = "";
-       playerTurn = false;
+       isPlayerTurn = false;
        player = new Player();
        computer = new Player();
        setUpGame();
    }
 
    /**
-    * This void method initializes that card game environment, including settimg up a standard deck of 52 cards, 
+    * This void method initializes that card game environment, including settimg up a standard deck of 52 cards,
     * dealing 5 cards to the player and computer, creating a discard pile and setting the starting turn.
     */
-    
+
    public void setUpGame() {
-       
+
        for (int i = 0; i < 4; i++) {
            for (int j = 1; j <= 13; j++) {
                if (j == 1) {
@@ -89,7 +107,7 @@ class State {
                } else {
                    drawPile += j;
                }
-               
+
                if (i == 0) {
                    drawPile += "S";
                } else if (i == 1) {
@@ -115,18 +133,18 @@ class State {
 
        discardPile += drawCard();
 
-       playerTurn = false;
+       isPlayerTurn = false;
    }
 
 
-    /**
-     * This method checks if a String represents a valid card of length 3 that can be played.
-     *
-     * @param card - The value in a string of the given card.
-     * @return - True if the given card is valid and false otherwise.
-     */
- 
-    public boolean isValidCard(String card) {
+   /**
+    * This method checks if a String represents a valid card of length 3 that can be played.
+    *
+    * @param card - The value in a string of the given card.
+    * @return - True if the given card is valid and false otherwise.
+    */
+
+   public boolean isValidCard(String card) {
        if (card.length() != 3) {
            System.out.println("Invalid " + card + " length: " + card.length());
            return false;
@@ -137,8 +155,8 @@ class State {
                && card.charAt(0) != 'K') {
            System.out.println("Invalid card number.");
            return false;
-       }       
-        if (card.charAt(1) != 'S' && card.charAt(1) != 'H' && card.charAt(1) != 'D' && card.charAt(1) != 'C') {
+       }
+       if (card.charAt(1) != 'S' && card.charAt(1) != 'H' && card.charAt(1) != 'D' && card.charAt(1) != 'C') {
            System.out.println("Invalid card family.");
            return false;
        }
@@ -165,7 +183,7 @@ class State {
        } else {
            result += card.charAt(0);
        }
- 
+
        result += " of ";
 
        if (card.charAt(1) == 'S') {
@@ -186,8 +204,8 @@ class State {
     *
     * @param playerHand - The long string of all the cards in the player's hand separated by commas.
     */
-    
-   public void displayplayerHand(String playerHand) {
+
+   public void displayPlayerHand(String playerHand) {
        String hand = "";
        for (int i = 0; i < playerHand.length(); i += 3) {
            hand += displayCard(playerHand.substring(i, i + 3));
@@ -201,9 +219,9 @@ class State {
    /**
     * Return the top card of the discard pile.
     *
-    * @param playerHand - The long string of all the cards in the player's hand separated by commas.
-    */ 
-    
+    *
+    */
+
    public String returnTopPlayedCard() {
        return discardPile.substring(discardPile.length() - 3);
    }
@@ -212,8 +230,8 @@ class State {
     * This method draws a random card from the draw pile.
     *
     * @return - returns the string value (rank and suit) of the drawn card.
-    */ 
-    
+    */
+
    public String drawCard() {
 
        String card = "";
@@ -236,24 +254,24 @@ class State {
        return card;
    }
 
-    /**
-    * This method checks if the card entered by the palyer can be played.
+   /**
+    * This method checks if the card entered by the player can be played.
     *
-    * @parameter card - the given card that is eneterd by the player.
+    * @parameter card - the given card that is entered by the player.
     * @return - true if the player's card can be played, false if it can not be played.
-    */ 
-   
+    */
+
    public boolean checkPlayerCardValidity(String card) {
        // First, check if the card is in the proper format.
        if (!isValidCard(card)) {
            // The card is not in the proper format.
            return false;
        }
-       
+
        // Next, check if the card is in the player's hand.
        if (!containsString(player.hand, card)) {
            // The card is not in the player's hand.
-          return false;
+           return false;
        }
        // Next, check if the card can be played according to the rules.
        // For this, we need the top card of the discard pile.
@@ -267,14 +285,14 @@ class State {
        if (card.charAt(1) == topCard.charAt(1)) {
            // The card can be played.
            // The turn flips.
-           playerTurn = !playerTurn;
+           isPlayerTurn = !isPlayerTurn;
            return true;
        }
        // If the player enters an 8, it can be played and the player's turn ends.
        if (card.charAt(0) == '8') {
            // The card can be played.
            // The turn flips.
-           playerTurn = !playerTurn;
+           isPlayerTurn = !isPlayerTurn;
            return true;
        }
        // If none of the above conditions are satisfied, the card cannot be played.
@@ -287,8 +305,8 @@ class State {
     *
     * @parameter card - the given card that is eneterd by the player.
     * @return - true if the player's card can be played, false if it can not be played.
-    */ 
-    
+    */
+
    public boolean checkComputerCardValidity(String card) {
        // First, check if the card is in the proper format.
        if (!isValidCard(card)) {
@@ -312,56 +330,56 @@ class State {
        if (card.charAt(1) == topCard.charAt(1)) {
            // The card can be played.
            // The turn flips.
-           playerTurn = !playerTurn;
+           isPlayerTurn = !isPlayerTurn;
            return true;
        }
        // If the player enters an 8, it can be played and the player's turn ends.
        if (card.charAt(0) == '8') {
            // The card can be played.
            // The turn flips.
-           playerTurn = !playerTurn;
+           isPlayerTurn = !isPlayerTurn;
            return true;
        }
        // If none of the above conditions are satisfied, the card cannot be played.
        return false;
    }
-    
-    /**
+
+   /**
     * This method checks if the given card exists in the given hand.
     *
     * @parameter handStr - The long string consisting of the cards in the hand separated by commas.
     * @parameter cardString - The string of length 3, that represents the card to be found in the hand.
     * @return - true if the card exists in the hand and false if it doesn't.
-    */ 
-    
-    public boolean containsString(String handStr, String cardString){
-        int stringLength = handStr.length();
-        int substringLength = cardString.length();
-        boolean check = true;
-        
-        for(int i = 0; i <= stringLength - substringLength; i++){
+    */
+
+   public boolean containsString(String handStr, String cardString){
+       int stringLength = handStr.length();
+       int substringLength = cardString.length();
+       boolean check = true;
+
+       for(int i = 0; i <= stringLength - substringLength; i++){
            check = true;
-           
+
            for (int j = 0; j < substringLength; j++){
                if(handStr.charAt(i+j) != cardString.charAt(j)){
                    check = false;
                }
            }
-           
+
            if(check){
                return true;
-           } 
+           }
        }
        return false;
-    }
+   }
 
-  /**
+   /**
     * This method checks if the player has any valid cards to play. If none of the cards are valid, the player can't
     * play.
     *
     * @return - true if the card can be played in the round and false if it can't be played.
-    */ 
-    
+    */
+
    public boolean checkPlayerPlayable() {
        String card = "";
        for (int i = 0; i < player.hand.length(); i += 3) {
@@ -377,17 +395,17 @@ class State {
        return false;
    }
 
-    /**
-    * This method gets the first available valid card to play from the computer's hand. If none of the cards are valid, 
+   /**
+    * This method gets the first available valid card to play from the computer's hand. If none of the cards are valid,
     * the computer can't play.
     *
     * @return - the String value of the valid card in the computer's hand.
-    */ 
-    
+    */
+
    public String getValidComputerCard() {
        for (int i = 0; i < computer.hand.length(); i += 3) {
            String card = computer.hand.substring(i, i + 3);
-           if (checkComputerCardValidity(card)) {                
+           if (checkComputerCardValidity(card)) {
                return card;
            }
        }
@@ -397,15 +415,15 @@ class State {
    // Game Loops.
 
    /**
-    * This method display's the player's hand, displays the top card of the discard pile, and draws a card for the player 
+    * This method display's the player's hand, displays the top card of the discard pile, and draws a card for the player
     * if they don't have any valid cards to play.
     *
     * @parameter - the scanner object that takes in the player's input card.
-    */ 
-    
-   public void PlayerTurn(Scanner sc) {
+    */
+
+   public void playerTurn(Scanner sc) {
        System.out.println("Your hand: ");
-       displayplayerHand(player.hand);
+       displayPlayerHand(player.hand);
 
        System.out.println("Top card of the discard pile:\n" + displayCard(returnTopPlayedCard()));
 
@@ -416,7 +434,7 @@ class State {
            System.out.println("You drew:\n" + displayCard(drawnCard) + "\n");
            player.skipCounter++;
            if (player.skipCounter % 3 == 0) {
-               playerTurn = !playerTurn;
+               isPlayerTurn = !isPlayerTurn;
                player.skipCounter = 0;
            }
            return;
@@ -431,7 +449,7 @@ class State {
 
        if (!checkPlayerCardValidity(card) && !card.equals("None")) {
            System.out.println("Invalid card. Can't play this card. Enter another card:\n");
-           PlayerTurn(sc);
+           playerTurn(sc);
        } else {
 
            player.hand = player.hand.substring(0, player.hand.indexOf(card)) + player.hand.substring(player.hand.indexOf(card) + 3);
@@ -446,9 +464,9 @@ class State {
     * This method display's the top card of the discard pile, draws a card when needed for the computer, and displays
     * how many cards the computer has.
     *
-    */ 
-    
-   public void ComputerTurn() {
+    */
+
+   public void computerTurn() {
        System.out.println("Top card of the discard pile:\n" + displayCard(returnTopPlayedCard()));
        String card = getValidComputerCard();
 
@@ -460,7 +478,7 @@ class State {
            computer.hand += drawnCard;
            computer.skipCounter++;
            if (computer.skipCounter % 3 == 0) {
-               playerTurn = !playerTurn;
+               isPlayerTurn = !isPlayerTurn;
                computer.skipCounter = 0;
            }
            return;
@@ -476,17 +494,18 @@ class State {
    /**
     * This method alternates between the player's turn and the computer's turn until either the computer or player
     * wins the game
-    * 
+    *
     * @param sc - The scanner object for the user input.
     *
-    */ 
-    
-   public void GameLoop (Scanner sc) {
+    */
+
+   public void gameLoop (Scanner sc) {
        while (true) {
-           if (playerTurn) {
-               PlayerTurn(sc);
+           if (isPlayerTurn) {
+               playerTurn(sc);
            } else {
-               ComputerTurn();
+               computerTurn();
+
            }
 
            if (player.hand.equals("")) {
@@ -509,25 +528,25 @@ class State {
 
 
 /**
-    * 
-    * The main class represnting a simplified version of the Crazy Eights card game. 
-    * This class contains the main function to start the game, initialized necessary components, and runs the game
-    * until the completion.
-    * 
-    */ 
+*
+* The main class represnting a simplified version of the Crazy Eights card game.
+* This class contains the main function to start the game, initialized necessary components, and runs the game
+* until the completion.
+*
+*/
 public class KrazyEight {
-    
-    /**
+
+   /**
     * The main function for the crazy eights game.
     *
     * @param args - Command-line arguments
     */
-    
-    public static void main (String[] args) {
+
+   public static void main (String[] args) {
        Scanner sc = new Scanner(System.in);
 
        State state = new State();
 
-       state.GameLoop(sc);
-    }
+       state.gameLoop(sc);
+   }
 }
